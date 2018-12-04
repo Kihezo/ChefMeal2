@@ -4,11 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,8 +43,9 @@ public class FragmentAll extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private static RelativeLayout mLayout;
 
+    private OnFragmentInteractionListener mListener;
 
     public FragmentAll() {
         // Required empty public constructor
@@ -64,21 +70,8 @@ public class FragmentAll extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Recette")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        }else{
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
+
+
     }
 
 
@@ -87,7 +80,39 @@ public class FragmentAll extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_all, container, false);
+          return inflater.inflate(R.layout.fragment_fragment_all, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mLayout = view.findViewById(R.id.relative_id);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Recette")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                TextView mtext = new TextView(getContext());
+                                mtext.setText(String.valueOf(document.getId()));
+                                LinearLayout linearLayout = new LinearLayout(getContext());
+                                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                                linearLayout.addView(mtext);
+                                linearLayout.setLayoutParams(layoutParam);
+                                mLayout.addView(linearLayout);
+                            }
+                        }else{
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
     }
 
     @Override
