@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Chef Meal</string>
+    <string name="Title_name">Chef Meal</string>
+    <string name="Button_Recipes">Recherche par ingrédients</string>
+    <string name="Button_List">Liste des recettes</string>
+    <string name="EditText_Ingredients">Ingrédients</string>
+    <string name="Title_Ingredients">Recherche par ingrédients</string>
+    <string name="Button_Search">Chercher</string>
+    <string name="Checkbox_Starter">Entrée</string>
+    <string name="Checkbox_Maindish">Plat</string>
+    <string name="Chekbox_Desert">Dessert</string>
+    <string name="Title_Recipes">Liste des recettes</string>
+
+    <string name="title_activity_all_recipes">AllRecipes</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
