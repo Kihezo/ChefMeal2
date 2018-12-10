@@ -3,10 +3,26 @@ package chefmeal.chefmeal;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -27,6 +43,7 @@ public class FragmentDessert extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private static RelativeLayout dLayout;
     private OnFragmentInteractionListener mListener;
 
     public FragmentDessert() {
@@ -54,17 +71,77 @@ public class FragmentDessert extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+//        setContentView(R.layout.fragment_fragment_dessert);
+//        FirebaseFirestore dbd = FirebaseFirestore.getInstance();
+//
+//        ListView listView=(ListView)findViewById(R.id.listView);
+//        var listdessert = dbd.collection("Recette");
+   }
+//
+//    class CustomAdapter extends BaseAdapter {
+//
+//        @Override
+//        public int getCount(){
+//            return listdessert.length;
+//
+//        }
+//
+//        @Override
+//        public Object getItem(){
+//
+//        }
+//
+//        @Override
+//        public long getItemId(){
+//
+//        }
+//
+//        @Override
+//        public View getView(){
+//            return View;
+//        }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment_dessert, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        dLayout = view.findViewById(R.id.relative_dessert);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Recette")
+                .whereEqualTo("idCat", 3)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            int topvalue = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                layoutParam.setMargins(14, topvalue, 20, 0);
+                                TextView mtext = new TextView(getContext());
+                                mtext.setText(String.valueOf(document.getId()));
+                                LinearLayout linearLayout = new LinearLayout(getContext());
+                                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                                linearLayout.addView(mtext);
+                                linearLayout.setLayoutParams(layoutParam);
+                                dLayout.addView(linearLayout);
+                                topvalue+=50;
+                            }
+                        }else{
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
