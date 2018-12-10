@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -71,7 +73,6 @@ public class FragmentAll extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
 
 
@@ -95,10 +96,11 @@ public class FragmentAll extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-
+                            int topvalue = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                layoutParam.setMargins(14, topvalue, 20, 0);
                                 TextView mtext = new TextView(getContext());
                                 mtext.setText(String.valueOf(document.getId()));
                                 LinearLayout linearLayout = new LinearLayout(getContext());
@@ -106,6 +108,7 @@ public class FragmentAll extends Fragment {
                                 linearLayout.addView(mtext);
                                 linearLayout.setLayoutParams(layoutParam);
                                 mLayout.addView(linearLayout);
+                                topvalue+=50;
                             }
                         }else{
                             Log.w(TAG, "Error getting documents.", task.getException());
