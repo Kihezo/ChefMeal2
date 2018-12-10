@@ -71,34 +71,32 @@ public class FragmentDessert extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.fragment_fragment_dessert);
-//        FirebaseFirestore dbd = FirebaseFirestore.getInstance();
-//
-//        ListView listView=(ListView)findViewById(R.id.listView);
-//        var listdessert = dbd.collection("Recette");
-   }
-//
-//    class CustomAdapter extends BaseAdapter {
+        setContentView(R.layout.fragment_fragment_dessert);
+
+        ListView listView = (ListView)findViewById(R.id.listView);
+
+    }
+
+//    class CustomAdapter extends BaseAdapter{
 //
 //        @Override
-//        public int getCount(){
-//            return listdessert.length;
-//
+//        public int getCount() {
+//            return ;
 //        }
 //
 //        @Override
-//        public Object getItem(){
-//
+//        public Object getItem(int position) {
+//            return null;
 //        }
 //
 //        @Override
-//        public long getItemId(){
-//
+//        public long getItemId(int position) {
+//            return 0;
 //        }
 //
 //        @Override
-//        public View getView(){
-//            return View;
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            return null;
 //        }
 //    }
 
@@ -113,34 +111,34 @@ public class FragmentDessert extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dLayout = view.findViewById(R.id.relative_dessert);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Recette")
-                .whereEqualTo("idCat", 3)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            int topvalue = 0;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                layoutParam.setMargins(14, topvalue, 20, 0);
-                                TextView mtext = new TextView(getContext());
-                                mtext.setText(String.valueOf(document.getId()));
-                                LinearLayout linearLayout = new LinearLayout(getContext());
-                                linearLayout.setOrientation(LinearLayout.VERTICAL);
-                                linearLayout.addView(mtext);
-                                linearLayout.setLayoutParams(layoutParam);
-                                dLayout.addView(linearLayout);
-                                topvalue+=50;
-                            }
-                        }else{
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
+//        dLayout = view.findViewById(R.id.relative_dessert);
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("Recette")
+//                .whereEqualTo("idCat", 3)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if(task.isSuccessful()){
+//                            int topvalue = 0;
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//                                layoutParam.setMargins(14, topvalue, 20, 0);
+//                                TextView mtext = new TextView(getContext());
+//                                mtext.setText(String.valueOf(document.get("Nom")));
+//                                LinearLayout linearLayout = new LinearLayout(getContext());
+//                                linearLayout.setOrientation(LinearLayout.VERTICAL);
+//                                linearLayout.addView(mtext);
+//                                linearLayout.setLayoutParams(layoutParam);
+//                                dLayout.addView(linearLayout);
+//                                topvalue+=80;
+//                            }
+//                        }else{
+//                            Log.w(TAG, "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
 
     }
 

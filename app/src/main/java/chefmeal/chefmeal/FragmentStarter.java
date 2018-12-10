@@ -3,11 +3,24 @@ package chefmeal.chefmeal;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import static android.content.ContentValues.TAG;
 
 
 public class FragmentStarter extends Fragment {
@@ -20,6 +33,7 @@ public class FragmentStarter extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private static RelativeLayout sLayout;
     private OnFragmentInteractionListener mListener;
 
     public FragmentStarter() {
@@ -51,6 +65,41 @@ public class FragmentStarter extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        sLayout = view.findViewById(R.id.relative_starter);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Recette")
+                .whereEqualTo("idCat", 1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            int topvalue = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                layoutParam.setMargins(14, topvalue, 20, 0);
+                                TextView mtext = new TextView(getContext());
+                                mtext.setText(String.valueOf(document.get("Nom")));
+                                LinearLayout linearLayout = new LinearLayout(getContext());
+                                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                                linearLayout.addView(mtext);
+                                linearLayout.setLayoutParams(layoutParam);
+                                sLayout.addView(linearLayout);
+                                topvalue+=80;
+                            }
+                        }else{
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
     }
 
     @Override

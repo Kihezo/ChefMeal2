@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,13 +103,13 @@ public class FragmentAll extends Fragment {
                                 LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 layoutParam.setMargins(14, topvalue, 20, 0);
                                 TextView mtext = new TextView(getContext());
-                                mtext.setText(String.valueOf(document.getId()));
+                                mtext.setText(String.valueOf(document.get("Nom")));
                                 LinearLayout linearLayout = new LinearLayout(getContext());
                                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                                 linearLayout.addView(mtext);
                                 linearLayout.setLayoutParams(layoutParam);
                                 mLayout.addView(linearLayout);
-                                topvalue+=50;
+                                topvalue+=80;
                             }
                         }else{
                             Log.w(TAG, "Error getting documents.", task.getException());
