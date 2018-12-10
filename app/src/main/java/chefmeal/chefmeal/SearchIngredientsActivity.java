@@ -1,6 +1,7 @@
 package chefmeal.chefmeal;
 
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,23 +61,33 @@ public class SearchIngredientsActivity extends AppCompatActivity {
     }
 
     public void addIngredients(View view){
-        EditText newIngredient = (EditText) findViewById(R.id.editText2);
-        if(!(newIngredient.getText().toString().matches(""))){
+        EditText newIng = (EditText) findViewById(R.id.editText2);
+        String newIngredient = toLowerCase(newIng.getText().toString());
+        if(!(newIngredient.matches(""))){
             if(arrayList.isEmpty()){
-                arrayList.add(newIngredient.getText().toString());
+                arrayList.add(newIngredient);
                 adapter.notifyDataSetChanged();
             }else{
                 Boolean alreadyExist = false;
+                Boolean isInList = false;
+                for (String i:listIngre) {
+                    if (newIngredient.matches(i)) {
+                        System.out.println("L'ingrédient existe");
+                        isInList = true;
+                    }
+                }
                 for (String i:arrayList) {
-                    if (newIngredient.getText().toString().matches(i)){
+                    if (newIngredient.matches(i)){
                         alreadyExist = true;
                     }
                 }
-                if (!(alreadyExist)){
-                    arrayList.add(newIngredient.getText().toString());
-
+                if (!(alreadyExist) && (isInList)){
+                    arrayList.add(newIngredient);
                     adapter.notifyDataSetChanged();
-                }else{
+                }else if(!(isInList)){
+                    Toast.makeText(this, "Cet ingrédient n'existe pas dans la base de donnée", Toast.LENGTH_SHORT).show();
+                    }
+                else if(alreadyExist){
                     Toast.makeText(this, "Tu as déjà rentré cet ingrédient", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -84,6 +95,10 @@ public class SearchIngredientsActivity extends AppCompatActivity {
         else{
             Toast.makeText(this, "Tu n'as rien écris.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public String toLowerCase(String toLower){
+        return toLower.toLowerCase();
     }
 
     public void BackToHome(View view){
