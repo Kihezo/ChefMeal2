@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,10 +19,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class SearchIngredientsActivity extends AppCompatActivity {
 
@@ -95,6 +98,40 @@ public class SearchIngredientsActivity extends AppCompatActivity {
         else{
             Toast.makeText(this, "Tu n'as rien écris.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void goSearch(View view){
+        Intent intent = new Intent(this, SIResultActivity.class);
+
+        CheckBox entree = (CheckBox) findViewById(R.id.checkBox_Entree);
+        int ent_id = 0;
+        CheckBox plat = (CheckBox) findViewById(R.id.checkBox_Plat);
+        int pla_id = 0;
+        CheckBox dessert = (CheckBox) findViewById(R.id.checkBox_Dessert);
+        int des_id = 0;
+
+        String []ingEntered = new String[arrayList.size()];
+        int index = 0;
+        for(String i:arrayList){
+            ingEntered[index] = i;
+            index ++;
+        }
+
+        if(entree.isChecked()){
+            ent_id = 1;
+            intent.putExtra("entChecked", ent_id);
+        }
+        if(plat.isChecked()){
+            pla_id = 2;
+            intent.putExtra("plaChecked", pla_id);
+        }
+        if(dessert.isChecked()){
+            des_id = 3;
+            intent.putExtra("desChecked", des_id);
+        }
+
+        intent.putExtra("IngSelected", ingEntered);
+        startActivity(intent);
     }
 
     public String toLowerCase(String toLower){
