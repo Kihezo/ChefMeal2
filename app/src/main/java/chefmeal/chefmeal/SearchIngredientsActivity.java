@@ -52,8 +52,8 @@ public class SearchIngredientsActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                listIngre.add(document.getId().toString());
+                                //Log.d(TAG, document.getId() + " => " + document.getData());
+                                listIngre.add(String.valueOf(document.get("Nom")));
                             }
                         }else{
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -75,7 +75,7 @@ public class SearchIngredientsActivity extends AppCompatActivity {
                 Boolean isInList = false;
                 for (String i:listIngre) {
                     if (newIngredient.matches(i)) {
-                        System.out.println("L'ingrédient existe");
+                        //System.out.println("L'ingrédient existe");
                         isInList = true;
                     }
                 }
