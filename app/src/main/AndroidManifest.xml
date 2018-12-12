@@ -24,6 +24,7 @@
                 android:value=".HomePageActivity" />
         </activity>
         <activity android:name=".RecipesListActivity" />
+        <activity android:name=".SIResultActivity" />
     </application>
 
 </manifest>

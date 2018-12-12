@@ -71,9 +71,9 @@ public class FragmentDessert extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_fragment_dessert);
+        //setContentView(R.layout.fragment_fragment_dessert);
 
-        ListView listView = (ListView)findViewById(R.id.listView);
+        //ListView listView = (ListView)findViewById(R.id.listView);
 
     }
 
