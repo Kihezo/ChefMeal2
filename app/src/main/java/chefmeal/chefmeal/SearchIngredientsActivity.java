@@ -31,8 +31,9 @@ public class SearchIngredientsActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private ArrayList<String> arrayList;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private List<String> listIngre = new ArrayList<String>();
+    FirebaseFirestore db_IngName = FirebaseFirestore.getInstance();
+    private List<String> listIngName = new ArrayList<String>();
+    private List<String> listIngId = new ArrayList<String>();
 
 
     @Override
@@ -45,7 +46,7 @@ public class SearchIngredientsActivity extends AppCompatActivity {
         list.setAdapter(adapter);
 
 
-        db.collection("Ingredients")
+        db_IngName.collection("Ingredients")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -53,12 +54,12 @@ public class SearchIngredientsActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d(TAG, document.getId() + " => " + document.getData());
-                                listIngre.add(String.valueOf(document.get("Nom")));
+                                listIngName.add(String.valueOf(document.get("Nom")));
                             }
                         }else{
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
-                        System.out.println(listIngre.toString());
+                        System.out.println(listIngName.toString());
                     }
                 });
     }
@@ -73,7 +74,7 @@ public class SearchIngredientsActivity extends AppCompatActivity {
             }else{
                 Boolean alreadyExist = false;
                 Boolean isInList = false;
-                for (String i:listIngre) {
+                for (String i:listIngName) {
                     if (newIngredient.matches(i)) {
                         //System.out.println("L'ingrédient existe");
                         isInList = true;

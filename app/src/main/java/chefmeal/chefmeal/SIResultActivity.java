@@ -28,9 +28,7 @@ public class SIResultActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    FirebaseFirestore dbIng = FirebaseFirestore.getInstance();
-    FirebaseFirestore dbRec = FirebaseFirestore.getInstance();
-    FirebaseFirestore dbDisplay = FirebaseFirestore.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private List<String> listIngData = new ArrayList<String>();
     private List<String> listIng = new ArrayList<String>();
@@ -41,6 +39,7 @@ public class SIResultActivity extends AppCompatActivity {
     private List<String> listDisplayData = new ArrayList<String>();
     private List<String> listDisplay = new ArrayList<String>();
     private List<String> listDisplayFinal = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class SIResultActivity extends AppCompatActivity {
         int plat = intent.getIntExtra("plaChecked", 0);
         int dessert = intent.getIntExtra("desChecked", 0);
 
-        dbIng.collection("Ingredients")
+        db.collection("Ingredients")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -78,72 +77,71 @@ public class SIResultActivity extends AppCompatActivity {
                             System.out.println("Lol" + listIngre[0]);
                             System.out.println("Lol" + listFinal.toString());
 
+                            db.collection("Recette_ingredients")
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if(task.isSuccessful()){
+
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    //Log.d(TAG, document.getId() + " => " + document.getData());
+
+                                                    listRecData.add(String.valueOf(document.get("idIng")));
+                                                    listRec.add(String.valueOf(document.get("idRec")));
+                                                }
+
+                                                for (int i=0;i<listFinal.size();i++){
+                                                    for (int j=0;j<listRec.size();j++){
+                                                        if(listFinal.get(i).matches(listRecData.get(j))){
+                                                            listRecFinal.add(String.valueOf(listRec.get(j)));
+                                                        }
+                                                    }
+                                                }
+                                                System.out.println("alal" + listRecData.size());
+                                                System.out.println("alal" + listRec.size());
+                                                System.out.println("alal" + listRecFinal.toString());
+                                                db.collection("Recette")
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if(task.isSuccessful()){
+
+                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                        //Log.d(TAG, document.getId() + " => " + document.getData());
+
+                                                                        listDisplayData.add(String.valueOf(document.get("idRec")));
+                                                                        listDisplay.add(String.valueOf(document.get("Nom")));
+                                                                    }
+
+                                                                    for (int i=0;i<listRecFinal.size();i++){
+                                                                        for (int j=0;j<listDisplay.size();j++){
+                                                                            if(listRecFinal.get(i).matches(listDisplayData.get(j))){
+                                                                                listDisplayFinal.add(String.valueOf(listDisplay.get(j)));
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    System.out.println("olol" + listDisplayData.toString());
+                                                                    System.out.println("olol" + listDisplay.toString());
+                                                                    System.out.println("olol" + listDisplayFinal.toString());
+                                                                    System.out.println("olol" + listDisplayFinal.get(0));
+
+                                                                }
+                                                            }
+                                                        });
+                                            }
+                                        }
+                            });
                         }
                     }
         });
-
-        dbRec.collection("Recette_ingredients")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                listRecData.add(String.valueOf(document.get("idIng")));
-                                listRec.add(String.valueOf(document.get("idRec")));
-                            }
-
-                            for (int i=0;i<listFinal.size();i++){
-                                for (int j=0;j<listRec.size();j++){
-                                    if(listFinal.get(i).matches(listRecData.get(j))){
-                                        listRecFinal.add(String.valueOf(listRec.get(j)));
-                                    }
-                                }
-                            }
-                            System.out.println("alal" + listRecData.size());
-                            System.out.println("alal" + listRec.size());
-                            System.out.println("alal" + listRecFinal.toString());
-
-                        }
-                    }
-        });
-
-        dbDisplay.collection("Recette")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                listDisplayData.add(String.valueOf(document.get("idRec")));
-                                listDisplay.add(String.valueOf(document.get("Nom")));
-                            }
-
-                            for (int i=0;i<listRecFinal.size();i++){
-                                for (int j=0;j<listDisplayData.size();j++){
-                                    if(listRecFinal.get(i).matches(listDisplayData.get(j))){
-                                        listDisplayFinal.add(String.valueOf(listDisplay.get(j)));
-                                    }
-                                }
-                            }
-                            System.out.println("olol" + listDisplayData.toString());
-                            System.out.println("olol" + listDisplay.toString());
-                            System.out.println("olol" + listDisplayFinal.toString());
-
-                        }
-                    }
-                });
 
 
         ArrayList<SearchResultItemActivity> SIR_List = new ArrayList<>();
 
-        SIR_List.add(new SearchResultItemActivity("Line one"));
+
+        //SIR_List.add(new SearchResultItemActivity(String.valueOf(listDisplayFinal.get(0))));
         SIR_List.add(new SearchResultItemActivity("Line two"));
         SIR_List.add(new SearchResultItemActivity("Line three"));
 
