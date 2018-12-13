@@ -2,6 +2,7 @@ package chefmeal.chefmeal;
 
 import android.content.Intent;
 import android.provider.DocumentsContract;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -126,7 +127,7 @@ public class SIResultActivity extends AppCompatActivity {
                                                                     System.out.println("olol" + listDisplay.toString());
                                                                     System.out.println("olol" + listDisplayFinal.toString());
                                                                     System.out.println("olol" + listDisplayFinal.get(0));
-
+                                                                    createListe();
                                                                 }
                                                             }
                                                         });
@@ -138,12 +139,18 @@ public class SIResultActivity extends AppCompatActivity {
         });
 
 
+
+    }
+
+    public void createListe(){
         ArrayList<SearchResultItemActivity> SIR_List = new ArrayList<>();
 
-
+        for(String i:listDisplayFinal){
+            SIR_List.add(new SearchResultItemActivity(i));
+        }
         //SIR_List.add(new SearchResultItemActivity(String.valueOf(listDisplayFinal.get(0))));
-        SIR_List.add(new SearchResultItemActivity("Line two"));
-        SIR_List.add(new SearchResultItemActivity("Line three"));
+//        SIR_List.add(new SearchResultItemActivity("Line two"));
+//        SIR_List.add(new SearchResultItemActivity("Line three"));
 
         mRecyclerView = findViewById(R.id.ListResult);
         mRecyclerView.setHasFixedSize(true);
@@ -153,7 +160,6 @@ public class SIResultActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
-
 
     public void BackToHome(View view){
         super.onBackPressed();
