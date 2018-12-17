@@ -1,16 +1,12 @@
 package chefmeal.chefmeal;
 
 import android.content.Intent;
-import android.provider.DocumentsContract;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,12 +17,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
+import chefmeal.chefmeal.Adatpers.SearchResultAdapter;
+import chefmeal.chefmeal.Fragments.SearchResultItemActivity;
 
 public class SIResultActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private SearchResultAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -159,6 +156,15 @@ public class SIResultActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnClickListener(new SearchResultAdapter.OnClickItemListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent toRecipe = new Intent(getBaseContext(), RecipePageActivity.class);
+                toRecipe.putExtra("RecipeName", listDisplayFinal.get(position));
+                startActivity(toRecipe);
+            }
+        });
     }
 
     public void BackToHome(View view){

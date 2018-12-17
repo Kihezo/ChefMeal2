@@ -5,8 +5,15 @@
     android:id = "@+id/relative_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentAll">
+    tools:context=".Fragments.FragmentAll">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/allList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp" />
 </RelativeLayout>

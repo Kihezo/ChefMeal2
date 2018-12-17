@@ -1,4 +1,4 @@
-package chefmeal.chefmeal;
+package chefmeal.chefmeal.Fragments;
 
 public class SearchResultItemActivity {
     private String mText;

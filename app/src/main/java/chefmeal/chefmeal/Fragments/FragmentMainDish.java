@@ -1,11 +1,14 @@
-package chefmeal.chefmeal;
+package chefmeal.chefmeal.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import chefmeal.chefmeal.Adatpers.SearchResultAdapter;
+import chefmeal.chefmeal.R;
+import chefmeal.chefmeal.RecipePageActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -43,6 +53,12 @@ public class FragmentMainDish extends Fragment {
 
     private static RelativeLayout mdLayout;
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView mRecyclerView;
+    private SearchResultAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private List<String> listMainDishName = new ArrayList<String>();
+    private ArrayList<SearchResultItemActivity> maindishList = new ArrayList<>();
 
     public FragmentMainDish() {
         // Required empty public constructor
@@ -97,21 +113,13 @@ public class FragmentMainDish extends Fragment {
                         if(task.isSuccessful()){
                             int topvalue = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                layoutParam.setMargins(14, topvalue, 20, 0);
-                                TextView mtext = new TextView(getContext());
-                                mtext.setText(String.valueOf(document.get("Nom")));
-                                LinearLayout linearLayout = new LinearLayout(getContext());
-                                linearLayout.setOrientation(LinearLayout.VERTICAL);
-                                linearLayout.addView(mtext);
-                                linearLayout.setLayoutParams(layoutParam);
-                                mdLayout.addView(linearLayout);
-                                topvalue+=80;
+                                //Log.d(TAG, document.getId() + " => " + document.getData());
+                                listMainDishName.add(String.valueOf(document.get("Nom")));
                             }
                         }else{
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
+                        createList();
                     }
                 });
 
@@ -122,6 +130,32 @@ public class FragmentMainDish extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public void createList(){
+
+        if (maindishList.isEmpty()){
+            for (String i:listMainDishName){
+                maindishList.add(new SearchResultItemActivity(i));
+            }
+        }
+
+        mRecyclerView = getView().findViewById(R.id.maindishList);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new SearchResultAdapter(maindishList);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnClickListener(new SearchResultAdapter.OnClickItemListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent toRecipe = new Intent(getContext(), RecipePageActivity.class);
+                toRecipe.putExtra("RecipeName", listMainDishName.get(position));
+                startActivity(toRecipe);
+            }
+        });
     }
 
     @Override

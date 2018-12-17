@@ -1,4 +1,4 @@
-package chefmeal.chefmeal;
+package chefmeal.chefmeal.Adatpers;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -38,8 +38,4 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         lstFragment.add(fragment);
         lstTitle.add(title);
     }
-
-
-
-
 }

@@ -1,18 +1,19 @@
-package chefmeal.chefmeal;
+package chefmeal.chefmeal.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import chefmeal.chefmeal.Adatpers.SearchResultAdapter;
+import chefmeal.chefmeal.R;
+import chefmeal.chefmeal.RecipePageActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -42,6 +50,12 @@ public class FragmentDessert extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView mRecyclerView;
+    private SearchResultAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private List<String> listDessertName = new ArrayList<String>();
+    private ArrayList<SearchResultItemActivity> dessertList = new ArrayList<>();
 
     private static RelativeLayout dLayout;
     private OnFragmentInteractionListener mListener;
@@ -71,34 +85,39 @@ public class FragmentDessert extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.fragment_fragment_dessert);
 
-        //ListView listView = (ListView)findViewById(R.id.listView);
-
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
-//    class CustomAdapter extends BaseAdapter{
-//
-//        @Override
-//        public int getCount() {
-//            return ;
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return null;
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return 0;
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            return null;
-//        }
-//    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        dLayout = view.findViewById(R.id.relative_dessert);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Recette")
+                .whereEqualTo("idCat", 3)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //Log.d(TAG, document.getId() + " => " + document.getData());
+                                listDessertName.add(String.valueOf(document.get("Nom")));
+                            }
+                        }else{
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                        //System.out.println("crepe " + listDessertName.toString());
+                        createList();
+                    }
+                });
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,46 +126,37 @@ public class FragmentDessert extends Fragment {
         return inflater.inflate(R.layout.fragment_fragment_dessert, container, false);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-//        dLayout = view.findViewById(R.id.relative_dessert);
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("Recette")
-//                .whereEqualTo("idCat", 3)
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if(task.isSuccessful()){
-//                            int topvalue = 0;
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//                                layoutParam.setMargins(14, topvalue, 20, 0);
-//                                TextView mtext = new TextView(getContext());
-//                                mtext.setText(String.valueOf(document.get("Nom")));
-//                                LinearLayout linearLayout = new LinearLayout(getContext());
-//                                linearLayout.setOrientation(LinearLayout.VERTICAL);
-//                                linearLayout.addView(mtext);
-//                                linearLayout.setLayoutParams(layoutParam);
-//                                dLayout.addView(linearLayout);
-//                                topvalue+=80;
-//                            }
-//                        }else{
-//                            Log.w(TAG, "Error getting documents.", task.getException());
-//                        }
-//                    }
-//                });
-
-    }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public void createList(){
+
+        if (dessertList.isEmpty()){
+            for (String i:listDessertName){
+                dessertList.add(new SearchResultItemActivity(i));
+            }
+        }
+
+        mRecyclerView = getView().findViewById(R.id.dessertList);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new SearchResultAdapter(dessertList);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnClickListener(new SearchResultAdapter.OnClickItemListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent toRecipe = new Intent(getContext(), RecipePageActivity.class);
+                toRecipe.putExtra("RecipeName", listDessertName.get(position));
+                startActivity(toRecipe);
+            }
+        });
     }
 
     @Override

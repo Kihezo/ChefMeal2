@@ -33,7 +33,6 @@ public class SearchIngredientsActivity extends AppCompatActivity {
 
     FirebaseFirestore db_IngName = FirebaseFirestore.getInstance();
     private List<String> listIngName = new ArrayList<String>();
-    private List<String> listIngId = new ArrayList<String>();
 
 
     @Override
@@ -88,6 +87,7 @@ public class SearchIngredientsActivity extends AppCompatActivity {
                 if (!(alreadyExist) && (isInList)){
                     arrayList.add(newIngredient);
                     adapter.notifyDataSetChanged();
+                    Toast.makeText(this, newIngredient + " ajouté", Toast.LENGTH_SHORT).show();
                 }else if(!(isInList)){
                     Toast.makeText(this, "Cet ingrédient n'existe pas dans la base de donnée", Toast.LENGTH_SHORT).show();
                     }

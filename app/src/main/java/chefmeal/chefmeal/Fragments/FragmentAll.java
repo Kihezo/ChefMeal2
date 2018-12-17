@@ -1,29 +1,34 @@
-package chefmeal.chefmeal;
+package chefmeal.chefmeal.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.text.util.Linkify;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import chefmeal.chefmeal.Adatpers.SearchResultAdapter;
+import chefmeal.chefmeal.R;
+import chefmeal.chefmeal.RecipePageActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -47,8 +52,13 @@ public class FragmentAll extends Fragment {
     private String mParam2;
 
     private static RelativeLayout mLayout;
+    private FragmentAll.OnFragmentInteractionListener mListener;
 
-    private OnFragmentInteractionListener mListener;
+    private RecyclerView mRecyclerView;
+    private SearchResultAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private List<String> listAllName = new ArrayList<String>();
+    private ArrayList<SearchResultItemActivity> AllList = new ArrayList<>();
 
     public FragmentAll() {
         // Required empty public constructor
@@ -97,26 +107,43 @@ public class FragmentAll extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            int topvalue = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                layoutParam.setMargins(14, topvalue, 20, 0);
-                                TextView mtext = new TextView(getContext());
-                                mtext.setText(String.valueOf(document.get("Nom")));
-                                LinearLayout linearLayout = new LinearLayout(getContext());
-                                linearLayout.setOrientation(LinearLayout.VERTICAL);
-                                linearLayout.addView(mtext);
-                                linearLayout.setLayoutParams(layoutParam);
-                                mLayout.addView(linearLayout);
-                                topvalue+=80;
+                                //Log.d(TAG, document.getId() + " => " + document.getData());
+                                listAllName.add(String.valueOf(document.get("Nom")));
                             }
                         }else{
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
+                        createList();
                     }
                 });
 
+    }
+
+    public void createList(){
+
+        if (AllList.isEmpty()){
+            for (String i:listAllName){
+                AllList.add(new SearchResultItemActivity(i));
+            }
+        }
+
+        mRecyclerView = getView().findViewById(R.id.allList);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new SearchResultAdapter(AllList);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnClickListener(new SearchResultAdapter.OnClickItemListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent toRecipe = new Intent(getContext(), RecipePageActivity.class);
+                toRecipe.putExtra("RecipeName", listAllName.get(position));
+                startActivity(toRecipe);
+            }
+        });
     }
 
     @Override

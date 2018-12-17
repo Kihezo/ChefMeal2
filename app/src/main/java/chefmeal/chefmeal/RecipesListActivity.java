@@ -7,6 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import chefmeal.chefmeal.Adatpers.ViewPagerAdapter;
+import chefmeal.chefmeal.Fragments.FragmentAll;
+import chefmeal.chefmeal.Fragments.FragmentDessert;
+import chefmeal.chefmeal.Fragments.FragmentMainDish;
+import chefmeal.chefmeal.Fragments.FragmentStarter;
+
 
 public class RecipesListActivity extends AppCompatActivity
         implements FragmentAll.OnFragmentInteractionListener,

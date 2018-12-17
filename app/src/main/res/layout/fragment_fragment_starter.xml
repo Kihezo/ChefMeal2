@@ -4,8 +4,16 @@
     android:id="@+id/relative_starter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentStarter">
+    tools:context=".Fragments.FragmentStarter">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/starterList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp" />
 </RelativeLayout>

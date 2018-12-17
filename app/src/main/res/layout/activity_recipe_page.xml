@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecipePageActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/title_RecipePage"
+        android:layout_width="325dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="28dp"
+        android:fontFamily="@font/caveat"
+        android:text="Nom de la recette"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:onClick="BackToHome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
+
+    <TextView
+        android:id="@+id/IngTitle"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:text="Ingrédients :"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/Ingre1"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toStartOf="@+id/ingre2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/IngTitle" />
+
+    <TextView
+        android:id="@+id/ingre2"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/Ingre1"
+        app:layout_constraintTop_toBottomOf="@+id/IngTitle" />
+
+    <TextView
+        android:id="@+id/ingre3"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toStartOf="@+id/ingre4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Ingre1" />
+
+    <TextView
+        android:id="@+id/ingre4"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ingre3"
+        app:layout_constraintTop_toBottomOf="@+id/ingre2" />
+
+    <TextView
+        android:id="@+id/ingre5"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toStartOf="@+id/ingre6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingre3" />
+
+    <TextView
+        android:id="@+id/ingre6"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ingre5"
+        app:layout_constraintTop_toBottomOf="@+id/ingre4" />
+
+    <TextView
+        android:id="@+id/ingre7"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toStartOf="@+id/ingre8"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingre5" />
+
+    <TextView
+        android:id="@+id/ingre8"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ingre7"
+        app:layout_constraintTop_toBottomOf="@+id/ingre6" />
+
+    <TextView
+        android:id="@+id/ingre9"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toStartOf="@+id/ingre10"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingre7" />
+
+    <TextView
+        android:id="@+id/ingre10"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="IngredientsHolder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ingre9"
+        app:layout_constraintTop_toBottomOf="@+id/ingre8" />
+
+    <TextView
+        android:id="@+id/StepTitle"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="130dp"
+        android:text="Étapes :"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/IngTitle" />
+
+    <TextView
+        android:id="@+id/idStep"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:text="."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/StepTitle" />
+
+</android.support.constraint.ConstraintLayout>
