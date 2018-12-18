@@ -114,6 +114,7 @@ public class FragmentMainDish extends Fragment {
                             int topvalue = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d(TAG, document.getId() + " => " + document.getData());
+                                // Stockage des noms de recette si c'est un plat principale
                                 listMainDishName.add(String.valueOf(document.get("Nom")));
                             }
                         }else{
@@ -132,8 +133,10 @@ public class FragmentMainDish extends Fragment {
         }
     }
 
+    // Méthode pour créer la liste dans le fragment
     public void createList(){
 
+        // Si la liste est vide, on l'a rempli une fois
         if (maindishList.isEmpty()){
             for (String i:listMainDishName){
                 maindishList.add(new SearchResultItemActivity(i));

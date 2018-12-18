@@ -18,10 +18,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     private ArrayList<SearchResultItemActivity> mSearchResultList;
     private OnClickItemListener mListener;
 
+    // Deux méthodes pour la gestion des évènements de clique
     public interface OnClickItemListener{
         void onItemClick(int position);
     }
-
     public void setOnClickListener(OnClickItemListener listener){
         mListener = listener;
     }

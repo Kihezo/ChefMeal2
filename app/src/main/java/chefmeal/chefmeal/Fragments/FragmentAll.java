@@ -109,6 +109,7 @@ public class FragmentAll extends Fragment {
                         if(task.isSuccessful()){
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d(TAG, document.getId() + " => " + document.getData());
+                                // Stockage de tous les noms de recette dans une liste
                                 listAllName.add(String.valueOf(document.get("Nom")));
                             }
                         }else{
@@ -120,8 +121,10 @@ public class FragmentAll extends Fragment {
 
     }
 
+    // Méthode pour créer la liste dans le fragment
     public void createList(){
 
+        // Si la liste est vide, on l'a rempli une fois
         if (AllList.isEmpty()){
             for (String i:listAllName){
                 AllList.add(new SearchResultItemActivity(i));

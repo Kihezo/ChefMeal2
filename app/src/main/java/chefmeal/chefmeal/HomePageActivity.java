@@ -14,11 +14,13 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
     }
 
+    // Bouton "Recherche par ingrédients"
     public void getIngredients(View view){
         Intent toIngredients = new Intent(this, SearchIngredientsActivity.class);
         startActivity(toIngredients);
     }
 
+    // Bouton "Liste des recettes"
     public void getRecipes(View view){
         Intent toRecipe = new Intent(this, RecipesListActivity.class);
         startActivity(toRecipe);

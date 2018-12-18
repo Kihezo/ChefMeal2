@@ -99,6 +99,7 @@ public class FragmentStarter extends Fragment {
                             int topvalue = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d(TAG, document.getId() + " => " + document.getData());
+                                // Stockage des noms de recette si c'est une entrée
                                 listStarterName.add(String.valueOf(document.get("Nom")));
                             }
                         }else{
@@ -117,8 +118,10 @@ public class FragmentStarter extends Fragment {
         return inflater.inflate(R.layout.fragment_fragment_starter, container, false);
     }
 
+    // Méthode pour créer la liste dans le fragment
     public void createList(){
 
+        // Si la liste est vide, on l'a rempli une fois
         if (starterList.isEmpty()){
             for (String i:listStarterName){
                 starterList.add(new SearchResultItemActivity(i));

@@ -35,6 +35,7 @@ public class RecipesListActivity extends AppCompatActivity
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+        // Création de chaque fragments de vue, avec leurs titre dans un tableau
         adapter.AddFragment(new FragmentAll(), "Toutes");
         adapter.AddFragment(new FragmentStarter(), "Entrées");
         adapter.AddFragment(new FragmentMainDish(), "Plats");
@@ -47,6 +48,7 @@ public class RecipesListActivity extends AppCompatActivity
     }
 
 
+    // Appuyer sur la flèche en haut de l'écran permet de faire un retour sur l'ancienne page
     public void BackToHome(View view){
         super.onBackPressed();
     }

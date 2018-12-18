@@ -28,6 +28,7 @@ public class SIResultActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    // Création de beaucoup de liste qui permettent la gestion de données
     private List<String> listIngData = new ArrayList<String>();
     private List<String> listIng = new ArrayList<String>();
     private List<String> listFinal = new ArrayList<String>();
@@ -44,7 +45,9 @@ public class SIResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_siresult);
 
+        // Récupération de l'intent envoyé par la page "SearchIngredientsActivity"
         Intent intent = getIntent();
+        // Récupération des données envoyé par la page "SearchIngredientsActivity"
         final String []listIngre = intent.getStringArrayExtra("IngSelected");
         int entree = intent.getIntExtra("entChecked", 0);
         int plat = intent.getIntExtra("plaChecked", 0);
@@ -59,6 +62,7 @@ public class SIResultActivity extends AppCompatActivity {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d(TAG, document.getId() + " => " + document.getData());
+                                // Stockage des données de la base de donnée dans une liste
                                 listIngData.add(String.valueOf(document.get("idIng")));
                                 listIng.add(String.valueOf(document.get("Nom")));
                             }
@@ -66,14 +70,15 @@ public class SIResultActivity extends AppCompatActivity {
                             for(int i = 0; i < listIngre.length;i++){
                                 for(int j = 0; j < listIng.size();j++){
                                     if (listIngre[i].matches(listIng.get(j))){
+                                        // Pour chaque donnée envoyé par la page "SearchIngredientsActivity" on récupère son id
                                         listFinal.add(String.valueOf(listIngData.get(j)));
                                     }
                                 }
                             }
-                            System.out.println("Lol" + listIngData.toString());
-                            System.out.println("Lol" + listIng.toString());
-                            System.out.println("Lol" + listIngre[0]);
-                            System.out.println("Lol" + listFinal.toString());
+//                            System.out.println("Lol" + listIngData.toString());
+//                            System.out.println("Lol" + listIng.toString());
+//                            System.out.println("Lol" + listIngre[0]);
+//                            System.out.println("Lol" + listFinal.toString());
 
                             db.collection("Recette_ingredients")
                                     .get()
@@ -84,7 +89,7 @@ public class SIResultActivity extends AppCompatActivity {
 
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     //Log.d(TAG, document.getId() + " => " + document.getData());
-
+                                                    // Stpclage des données de la base de donnée dans une liste
                                                     listRecData.add(String.valueOf(document.get("idIng")));
                                                     listRec.add(String.valueOf(document.get("idRec")));
                                                 }
@@ -92,13 +97,14 @@ public class SIResultActivity extends AppCompatActivity {
                                                 for (int i=0;i<listFinal.size();i++){
                                                     for (int j=0;j<listRec.size();j++){
                                                         if(listFinal.get(i).matches(listRecData.get(j))){
+                                                            // Pour chaque id d'ingrédients, on récupère l'id de sa recette correspondante
                                                             listRecFinal.add(String.valueOf(listRec.get(j)));
                                                         }
                                                     }
                                                 }
-                                                System.out.println("alal" + listRecData.size());
-                                                System.out.println("alal" + listRec.size());
-                                                System.out.println("alal" + listRecFinal.toString());
+//                                                System.out.println("alal" + listRecData.size());
+//                                                System.out.println("alal" + listRec.size());
+//                                                System.out.println("alal" + listRecFinal.toString());
                                                 db.collection("Recette")
                                                         .get()
                                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -108,7 +114,7 @@ public class SIResultActivity extends AppCompatActivity {
 
                                                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                                                         //Log.d(TAG, document.getId() + " => " + document.getData());
-
+                                                                        // Stockage des données de la base de donnée dans une liste
                                                                         listDisplayData.add(String.valueOf(document.get("idRec")));
                                                                         listDisplay.add(String.valueOf(document.get("Nom")));
                                                                     }
@@ -116,14 +122,16 @@ public class SIResultActivity extends AppCompatActivity {
                                                                     for (int i=0;i<listRecFinal.size();i++){
                                                                         for (int j=0;j<listDisplay.size();j++){
                                                                             if(listRecFinal.get(i).matches(listDisplayData.get(j))){
+                                                                                // Pour chaque id de recette, on récupère le nom de la recette correspondante
                                                                                 listDisplayFinal.add(String.valueOf(listDisplay.get(j)));
                                                                             }
                                                                         }
                                                                     }
-                                                                    System.out.println("olol" + listDisplayData.toString());
-                                                                    System.out.println("olol" + listDisplay.toString());
-                                                                    System.out.println("olol" + listDisplayFinal.toString());
-                                                                    System.out.println("olol" + listDisplayFinal.get(0));
+//                                                                    System.out.println("olol" + listDisplayData.toString());
+//                                                                    System.out.println("olol" + listDisplay.toString());
+//                                                                    System.out.println("olol" + listDisplayFinal.toString());
+//                                                                    System.out.println("olol" + listDisplayFinal.get(0));
+                                                                    // Appel de la méthode qui créer la liste de recette
                                                                     createListe();
                                                                 }
                                                             }
@@ -139,9 +147,11 @@ public class SIResultActivity extends AppCompatActivity {
 
     }
 
+    // Méthode qui créer la lsite de recette
     public void createListe(){
         ArrayList<SearchResultItemActivity> SIR_List = new ArrayList<>();
 
+        // ajout du nom de chaque recette trouvé dans la liste
         for(String i:listDisplayFinal){
             SIR_List.add(new SearchResultItemActivity(i));
         }
@@ -157,6 +167,7 @@ public class SIResultActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
+        // Gestion des évènements de cliques sur chaque éléments de la liste
         mAdapter.setOnClickListener(new SearchResultAdapter.OnClickItemListener() {
             @Override
             public void onItemClick(int position) {
@@ -167,6 +178,7 @@ public class SIResultActivity extends AppCompatActivity {
         });
     }
 
+    // Appuyer sur la flèche en haut de l'écran permet de faire un retour sur l'ancienne page
     public void BackToHome(View view){
         super.onBackPressed();
     }

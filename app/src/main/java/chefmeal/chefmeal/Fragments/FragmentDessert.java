@@ -107,6 +107,7 @@ public class FragmentDessert extends Fragment {
                         if(task.isSuccessful()){
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d(TAG, document.getId() + " => " + document.getData());
+                                // Stockage des noms de recette si c'est un dessert
                                 listDessertName.add(String.valueOf(document.get("Nom")));
                             }
                         }else{
@@ -133,8 +134,10 @@ public class FragmentDessert extends Fragment {
         }
     }
 
+    // Méthode pour créer la liste dans le fragment
     public void createList(){
 
+        // Si la liste est vide, on l'a rempli une fois
         if (dessertList.isEmpty()){
             for (String i:listDessertName){
                 dessertList.add(new SearchResultItemActivity(i));
